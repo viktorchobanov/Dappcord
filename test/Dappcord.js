@@ -80,4 +80,33 @@ describe("Dappcord", function () {
             expect(result).to.equal(AMOUNT)
         })
     })
+
+    describe("Withdrawing", () => {
+        const ID = 1
+        const AMAUNT = tokens(10)
+
+        let balanceBefore
+
+        beforeEach(async () => {
+            balanceBefore = await ethers.provider.getBalance(deployer.address)
+
+            transaction = await dappcord.connect(user).mint(ID, { value: AMAUNT })
+            await transaction.wait()
+
+            transaction = await dappcord.connect(deployer).withdraw()
+            await transaction.wait()
+        })
+
+        it('Updates the owner balance', async () => {
+            const balanceAfter = await ethers.provider.getBalance(deployer.address)
+
+            expect(balanceAfter).to.be.greaterThan(balanceBefore)
+        })
+
+        it('Contract balance updated', async () => {
+            const result = await ethers.provider.getBalance(dappcord.address)
+
+            expect(result).to.equal(0)
+        })
+    })
 })
