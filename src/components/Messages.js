@@ -20,6 +20,17 @@ const Messages = ({ account, messages, currentChannel }) => {
     console.log("sending" + message)
   }
 
+  // Scroll to the last message
+  const scrollHandler = () => {
+    setTimeout(() => {
+      messageEndRef.current.scrollIntoView({ behavior: 'smooth' })
+    }, 500)
+  }
+
+  useEffect(() => {
+    scrollHandler()
+  }, [])
+
   useEffect(() => {
     (currentChannel && account) ? setConnected(true) : setConnected(false)
   }, [account, currentChannel])
