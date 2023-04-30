@@ -19,7 +19,7 @@ const Messages = ({ account, messages, currentChannel }) => {
 
     const newMessage = {
       account,
-      channel: currentChannel,
+      channel: currentChannel.id.toString(),
       text: message
     }
 
