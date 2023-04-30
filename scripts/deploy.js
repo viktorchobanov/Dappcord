@@ -6,22 +6,31 @@
 // global scope, and execute the script.
 const hre = require("hardhat");
 
+const tokens = (n) => {
+  return ethers.utils.parseUnits(n.toString(), "ether")
+}
+
 async function main() {
-  const currentTimestampInSeconds = Math.round(Date.now() / 1000);
-  const unlockTime = currentTimestampInSeconds + 60;
+  const [deployer] = await hre.ethers.getSigners()
+  const NAME = "Dappcord"
+  const SYMBOL = "DC"
 
-  const lockedAmount = hre.ethers.utils.parseEther("0.001");
+  // Deploy
+  const Dappcord = await ethers.getContractFactory(NAME)
+  const dappcord = await Dappcord.deploy(NAME, SYMBOL)
+  await dappcord.deployed()
 
-  const Lock = await hre.ethers.getContractFactory("Lock");
-  const lock = await Lock.deploy(unlockTime, { value: lockedAmount });
+  console.log(`Deployed ${NAME} at - ${dappcord.address}\n`)
 
-  await lock.deployed();
+  const DEFAULT_CHANNEL_NAMES = ["general", "intro", "memes"]
+  const DEFAULT_COSTS = [tokens(1), tokens(1.5), tokens(0.25)]
 
-  console.log(
-    `Lock with ${ethers.utils.formatEther(
-      lockedAmount
-    )}ETH and unlock timestamp ${unlockTime} deployed to ${lock.address}`
-  );
+  for (let i = 0; i < 3; i++) {
+    const transaction = await dappcord.connect(deployer).createChannel(DEFAULT_CHANNEL_NAMES[i], DEFAULT_COSTS[i])
+    await transaction.wait()
+
+    console.log(`Created channel ${DEFAULT_CHANNEL_NAMES[i]}`)
+  }
 }
 
 // We recommend this pattern to be able to use async/await everywhere
