@@ -17,7 +17,16 @@ const Messages = ({ account, messages, currentChannel }) => {
   const sendMessage = async (e) => {
     e.preventDefault()
 
-    console.log("sending" + message)
+    const newMessage = {
+      account,
+      channel: currentChannel,
+      text: message
+    }
+
+    if (message !== '')
+      socket.emit('new message', newMessage)
+
+    setMessage('')
   }
 
   // Scroll to the last message
