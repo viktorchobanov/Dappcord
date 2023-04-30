@@ -1,5 +1,6 @@
 import { useEffect, useState, useRef } from 'react'
 import { io } from "socket.io-client"
+import { Avatar } from './Avatar'
 
 // Assets
 import person from '../assets/person.svg'
@@ -49,7 +50,7 @@ const Messages = ({ account, messages, currentChannel }) => {
       <div className="messages">
         {currentChannel && messages.filter(message => message.channel === currentChannel.id.toString()).map((message, idx) => (
           <div className='message' key={idx}>
-            <img src={person} alt={account} />
+            <Avatar address={message.account} />
             <div className='message_content'>
               <h3>{message.account.slice(0, 6) + '...' + message.account.slice(38, 42)}</h3>
               <p>
