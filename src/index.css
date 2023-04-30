@@ -232,7 +232,7 @@ main {
 }
 
 .message_content h3 {
-  color: var(--clr-white);
+  color: wheat;
   font-size: 1.05em;
   font-weight: 500;
   margin-left: 15px;

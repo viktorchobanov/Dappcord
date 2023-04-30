@@ -9,10 +9,9 @@ const Channels = ({ provider, account, dappcord, channels, currentChannel, setCu
       const signer = await provider.getSigner()
       const transactions = await dappcord.connect(signer).mint(channel.id, { value: channel.cost })
       await transactions.wait()
+      setCurrentChannel(channel)
     }
-
   }
-
 
   return (
     <div className="channels">
